@@ -1,0 +1,20 @@
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
+
+RUN mkdir /fastapi
+
+RUN pip install pipenv
+
+WORKDIR /fastapi
+
+COPY Pipfile* /fastapi
+#--keep-outdated flag ensures pipenv doesn’t try to update dependencies if the lockfile is out of sync. 
+
+RUN pipenv lock --keep-outdated --requirements > requirements.txt
+
+RUN pip install -r requirements.txt
+
+COPY . /fastapi
+
+EXPOSE 8082
+
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8082"]

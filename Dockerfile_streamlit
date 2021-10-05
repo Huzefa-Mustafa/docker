@@ -1,0 +1,21 @@
+FROM python:3.7
+
+EXPOSE 8083
+
+WORKDIR /streamlit
+
+ENV STREAMLIT_SERVER_PORT=8083  
+
+RUN pip install pipenv
+
+COPY Pipfile* /
+#--keep-outdated flag ensures pipenv doesn’t try to update dependencies if the lockfile is out of sync. 
+
+RUN pipenv lock --keep-outdated --requirements > requirements.txt
+
+RUN pip install -r requirements.txt
+
+COPY . /streamlit
+
+ENTRYPOINT [ "streamlit", "run"]
+CMD ["Assessment.py"]
