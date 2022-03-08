@@ -30,7 +30,31 @@
  - docker-compose up --build
  - docker-compose down
 
-note: when a container is restarted the data inside the container would be gone 
+note: when a container is restarted the data inside the container would be gone , for data persistance we can create volume
+# Volume:
+## Create Volume:
+ - docker volume create --name DataVolume
+## To verify:
+ We can verify that the volume is present on our system with docker volume inspect
+ - docker volume inspect DataVolume
+## To remove:
+ - docker volume rm DataVolume
+## Create volume with container image for e.g (ubuntu):
+ - docker run -dit -P --name ubuntu-test -v /DataVolume:/datavolume ubuntu
+
+    The above command breaks down like this:
+
+    - docker run is the main command that says we’re going to run a command in a new container.
+    - -dit is d for detached mode, and it ensures that bash or sh can be allocated to a pseudo terminal, -t will give us a terminal and -i will allow us to interact with it
+    - -P publishes the containers ports to the host.
+    - --name says what follows is the name of the new container.
+    - -v says what follows is to be the volume.
+    - ubuntu is the image to be used for the container.
+    
+    **Note**: The -v flag is very flexible. It can bindmount or name a volume with just a slight adjustment in syntax. For example:
+    - -v /path:/path/in/container mounts the host directory, /path at the /path/in/container
+    - -v path:/path/in/container creates a volume named path with no relationship to the host.
+
 
 # Portainer:
 ## create volume:
